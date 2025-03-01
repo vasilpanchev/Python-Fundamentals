@@ -4,7 +4,7 @@
 account_holders = []  # Account names
 balances = []  # Account balances
 transaction_histories = []  # Account transaction logs
-loans = []  # Account loan details
+loans = []  # Account loan product_data
 
 MAX_LOAN_AMOUNT = 10_000
 INTEREST_RATE = 0.03
@@ -128,7 +128,7 @@ def check_balance():
 
 
 def list_accounts():
-    """List all account holders and details."""
+    """List all account holders and product_data."""
     for i in range(len(account_holders)):
         print(f"Account holder:{account_holders[i]} -> Balance: ${balances[i]}")
 
