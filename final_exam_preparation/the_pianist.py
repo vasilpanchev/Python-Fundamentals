@@ -1,49 +1,70 @@
 class Pianist:
+
     def __init__(self):
-        pass
+        self.pieces = {}
+
+    def initiate_pieces(self, n: int):
+        for _ in range(n):
+            piece = input().split("|")
+            piece_name, composer, key = piece[0], piece[1], piece[2]
+            self.pieces[piece_name] = {"composer": composer, "key": key}
+
+    def add_piece(self, piece: str, composer: str, key: str):
+        if piece in self.pieces.keys():
+            return f"{piece} is already in the collection!"
+        else:
+            self.pieces[piece] = {"composer": composer, "key": key}
+            return f"{piece} by {composer} in {key} added to the collection!"
+
+    def remove_piece(self, piece: str):
+        if piece in self.pieces.keys():
+            del self.pieces[piece]
+            return f"Successfully removed {piece}!"
+        else:
+            return f"Invalid operation! {piece} does not exist in the collection."
+
+    def change_key(self, piece, new_key):
+        if piece in self.pieces.keys():
+            self.pieces[piece]["key"] = new_key
+            return f"Changed the key of {piece} to {new_key}!"
+        else:
+            return f"Invalid operation! {piece} does not exist in the collection."
+
+    def edit_pieces(self):
+        command = input()
+        while command != "Stop":
+            command = command.split("|")
+            action = command[0]
+            if action == "Add":
+                piece, composer, key = command[1], command[2], command[3]
+                result = self.add_piece(piece, composer, key)
+                print(result)
+            elif action == "Remove":
+                piece = command[1]
+                result = self.remove_piece(piece)
+                print(result)
+            elif action == "ChangeKey":
+                piece, new_key = command[1], command[2]
+                result = self.change_key(piece, new_key)
+                print(result)
+            command = input()
+
+    def __repr__(self):
+        output = []
+        for (name, details) in self.pieces.items():
+            composer = details["composer"]
+            key = details["key"]
+            output.append(f"{name} -> Composer: {composer}, Key: {key}")
+        return '\n'.join(output)
 
 
 def main():
+    pianist = Pianist()
     n = int(input())
-    pieces = {}
-    for _ in range(n):
-        piece = input().split("|")
-        piece_name, composer, key = piece[0], piece[1], piece[2]
-        pieces[piece_name] = {"composer": composer, "key": key}
+    pianist.initiate_pieces(n)
+    pianist.edit_pieces()
+    print(pianist)
 
-    command = input()
-    while command != "Stop":
-        command = command.split("|")
-        action = command[0]
-        if action == "Add":
-            piece = command[1]
-            composer = command[2]
-            key = command[3]
-            if piece in pieces.keys():
-                print(f"{piece} is already in the collection!")
-            else:
-                pieces[piece] = {"composer": composer, "key": key}
-                print(f"{piece} by {composer} in {key} added to the collection!")
-        elif action == "Remove":
-            piece = command[1]
-            if piece in pieces.keys():
-                del pieces[piece]
-                print(f"Successfully removed {piece}!")
-            else:
-                print(f"Invalid operation! {piece} does not exist in the collection.")
-        elif action == "ChangeKey":
-            piece = command[1]
-            new_key = command[2]
-            if piece in pieces.keys():
-                pieces[piece]["key"] = new_key
-                print(f"Changed the key of {piece} to {new_key}!")
-            else:
-                print(f"Invalid operation! {piece} does not exist in the collection.")
-        command = input()
-    for (name, details) in pieces.items():
-        composer = details["composer"]
-        key = details["key"]
-        print(f"{name} -> Composer: {composer}, Key: {key}")
 
 if __name__ == '__main__':
     main()
